@@ -110,7 +110,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <executions>
-                    <!--<execution>
+                    <execution>
                         <id>remove-test-database</id>
                         <phase>pre-integration-test</phase>
                         <goals>
@@ -125,7 +125,7 @@
                                 <arguemtn>Mysql</arguemtn>
                             </arguments>
                         </configuration>
-                    </execution>-->
+                    </execution>
                     <execution>
                         <id>start-test-database</id>
                         <phase>pre-integration-test</phase>
