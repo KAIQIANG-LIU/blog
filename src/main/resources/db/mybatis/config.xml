@@ -7,8 +7,8 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <typeAliases>
-        <typeAlias type="org.zaker.blogtest.entity.User" alias="user"/>
-        <typeAlias type="org.zaker.blogtest.entity.Blog" alias="blog"/>
+        <typeAlias type="org.zaker.blog.entity.User" alias="user"/>
+        <typeAlias type="org.zaker.blog.entity.Blog" alias="blog"/>
     </typeAliases>
     <environments default="development">
       <environment id="development">
