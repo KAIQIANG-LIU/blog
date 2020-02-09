@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BlogMapper">
+    <select id="selectBlog" resultType="blog">
+        SELECT BLOG.ID AS BLOG_ID,
+        BLOG.TITTLE AS BLOG_TITTLE,
+        BLOG.DESCRIPTION AS BLOG_DESCRIPTION,
+        BLOG.CONTENT AS BLOG_CONTENT,
+        BLOG.UPDATED_AT AS BLOG_UPDATED_AT,
+        BLOG.CREATED_AT AS BLOG_CREATED_AT,
+        USER.ID AS USER_ID,
+        USER.USERNAME AS USER_USERNAME,
+        USER.AVATAR AS USER_AVATAR,
+        USER.UPDATED_AT AS USER_UPDATED_AT,
+        USER.CREATED_AT AS USER_CREATED_AT
+        FROM BLOG
+        LEFT OUTER JOIN USER
+        ON BLOG.USER_ID = USER.ID
+        <if test="user_id!=null">
+            WHERE BLOG.USER_ID = #{user_id}
+        </if>
+        LIMIT #{offset},#{limit}
+    </select>
+    <select id="countBlog" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM BLOG
+        <if test="user_id!=null">
+            WHERE USER_ID=#{usrId}
+        </if>
+    </select>
+    <insert id="insertBlog" parameterType="blog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO BLOG (USER_ID, TITTLE, DESCRIPTION, CONTENT, CREATED_AT, UPDATED_AT)
+        VALUES (#{userId}, #{title}, #{description}, #{content}, now(), now())
+    </insert>
+
+    <update id="updateBlog" parameterType="blog">
+        UPDATE BLOG
+        SET TITTLE       = #{title},
+            CONTENT     = #{content},
+            DESCRIPTION = #{description},
+            UPDATED_AT  = now()
+        WHERE ID = #{id}
+    </update>
+    <select id="selectBlogById" parameterType="int" resultMap="blog">
+        SELECT BLOG.ID          AS BLOG_ID,
+               BLOG.TITTLE      AS BLOG_TITTLE,
+               BLOG.DESCRIPTION AS BLOG_DESCRIPTION,
+               BLOG.CONTENT     AS BLOG_CONTENT,
+               BLOG.CREATED_AT  AS BLOG_CREATED_AT,
+               BLOG.UPDATED_AT  AS BLOG_UPDATED_AT,
+               USER.ID          AS USER_ID,
+               USER.USERNAME    AS USER_USERNAME,
+               USER.AVATAR      AS USER_AVATAR,
+               USER.UPDATED_AT  AS USER_UPDATED_AT,
+               USER.CREATED_AT  AS USER_CREATED_AT
+        FROM BLOG
+                 LEFT OUTER JOIN USER
+                                 ON BLOG.USER_ID = USER.ID
+        WHERE BLOG.ID = #{id}
+    </select>
+    <delete id="deleteBlogById" parameterType="int">
+        DELETE
+        FROM BLOG
+        WHERE ID = #{id}
+    </delete>
+    <resultMap id="blog" type="blog">
+        <id property="id" column="BLOG_ID"/>
+        <result property="title" column="BLOG_TITTLE"/>
+        <result property="description" column="BLOG_DESCRIPTION"/>
+        <result property="content" column="BLOG_CONTENT"/>
+        <result property="updatedAt" column="BLOG_UPDATED_AT"/>
+        <result property="createdAt" column="BLOG_CREATED_AT"/>
+        <association property="user" javaType="user">
+            <id property="id" column="USER_ID"/>
+            <result property="username" column="USER_USERNAME"/>
+            <result property="avatar" column="USER_AVATAR"/>
+            <result property="updatedAt" column="USER_UPDATED_AT"/>
+            <result property="createdAt" column="USER_CREATED_AT"/>
+        </association>
+    </resultMap>
+
+</mapper>
