@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BlogMapper">
-    <select id="selectBlog" resultType="blog">
+    <select id="selectBlog" parameterType="map" resultMap="blog">
         SELECT BLOG.ID AS BLOG_ID,
         BLOG.TITTLE AS BLOG_TITTLE,
         BLOG.DESCRIPTION AS BLOG_DESCRIPTION,
@@ -29,9 +29,9 @@
             WHERE USER_ID=#{usrId}
         </if>
     </select>
-    <insert id="insertBlog" parameterType="blog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insertBlog" parameterType="map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO BLOG (USER_ID, TITTLE, DESCRIPTION, CONTENT, CREATED_AT, UPDATED_AT)
-        VALUES (#{userId}, #{title}, #{description}, #{content}, now(), now())
+        VALUES (#{userId}, #{tittle}, #{description}, #{content}, now(), now())
     </insert>
 
     <update id="updateBlog" parameterType="blog">
@@ -64,9 +64,9 @@
         FROM BLOG
         WHERE ID = #{id}
     </delete>
-    <resultMap id="blog" type="blog">
+    <resultMap id="blog" type="org.zaker.blog.entity.Blog">
         <id property="id" column="BLOG_ID"/>
-        <result property="title" column="BLOG_TITTLE"/>
+        <result property="tittle" column="BLOG_TITTLE"/>
         <result property="description" column="BLOG_DESCRIPTION"/>
         <result property="content" column="BLOG_CONTENT"/>
         <result property="updatedAt" column="BLOG_UPDATED_AT"/>

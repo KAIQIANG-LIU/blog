@@ -27,6 +27,7 @@ public class BlogService {
             int pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
             return BlogListResult.success(blogs, count, page, pageCount);
         } catch (Exception e) {
+            e.printStackTrace();
             return BlogListResult.failure("系统异常");
         }
     }

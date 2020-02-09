@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zaker.blog.entity.Blog;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,8 @@ public class BlogDao {
         parameters.put("user_id", userId);
         parameters.put("offset", (page - 1) * pageSize);
         parameters.put("limit", pageSize);
-        return sqlSession.selectList("BlogMapper.selectBlog", parameters);
+        List<Blog> objects = sqlSession.selectList("BlogMapper.selectBlog", parameters);
+        return objects;
     }
 
     public Blog getBlogById(Long id) {
@@ -42,7 +42,12 @@ public class BlogDao {
     }
 
     public Blog insertBlog(Blog newBlog) {
-        sqlSession.insert("BlogMapper.insertBlog", newBlog);
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId",newBlog.getUser().getId());
+        param.put("tittle",newBlog.getTittle());
+        param.put("description",newBlog.getDescription());
+        param.put("content",newBlog.getContent());
+        sqlSession.insert("BlogMapper.insertBlog", param);
         return getBlogById(newBlog.getId());
     }
 

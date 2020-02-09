@@ -6,18 +6,18 @@ public class BlogResult extends Result<Blog>{
     }
 
     public static BlogResult failure(String message) {
-        return new BlogResult(ResultStatus.FAIL, message, null);
+        return new BlogResult(ResultStatus.fail, message, null);
     }
 
     public static BlogResult failure(Exception e) {
-        return new BlogResult(ResultStatus.FAIL, e.getMessage(), null);
+        return new BlogResult(ResultStatus.fail, e.getMessage(), null);
     }
 
     public static BlogResult success(String msg) {
-        return new BlogResult(ResultStatus.OK, msg, null);
+        return new BlogResult(ResultStatus.ok, msg, null);
     }
 
     public static BlogResult success(String msg, Blog blog) {
-        return new BlogResult(ResultStatus.OK, msg, blog);
+        return new BlogResult(ResultStatus.ok, msg, blog);
     }
 }

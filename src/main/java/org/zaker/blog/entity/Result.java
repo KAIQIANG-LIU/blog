@@ -14,13 +14,17 @@ public abstract class Result<T> {
     }
 
     public enum ResultStatus {
-        OK("ok"),
-        FAIL("fail");
+        ok("ok"),
+        fail("fail");
 
         private String status;
 
         ResultStatus(String status) {
             this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
         }
     }
     private ResultStatus status;

@@ -3,9 +3,11 @@ package org.zaker.blog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,6 +62,9 @@ public class AuthController {
         }
         try {
             userService.insertNewSignUpUser(username, password);
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+            authenticationManager.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(token);
         } catch (DuplicateKeyException e) {
             return LoginResult.failure("user already exists");
         }
@@ -81,7 +86,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(token);
-            return LoginResult.success("登录成功", userService.getUserByUserName(userName));
+            return LoginResult.success("登录成功",userService.getUserByUserName(userName));
         } catch (BadCredentialsException e) {
             return LoginResult.failure("密码不正确");
         }
